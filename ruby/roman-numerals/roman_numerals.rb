@@ -22,7 +22,10 @@ class Fixnum
   def to_roman
     return "" unless self > 0 and self < 4000
     NUMBER_TO_ROMAN_MAP.each_pair do |number, roman|
-      return roman + (self - number).to_roman if self >= number
+      if self >= number
+        repeat = self / number
+        return (roman * repeat) + (self - (number * repeat)).to_roman
+      end
     end
   end
 end
