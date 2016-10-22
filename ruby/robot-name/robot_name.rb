@@ -3,14 +3,24 @@ module BookKeeping
 end
 
 class Robot
-  ALPHABET_ARRAY = ('A'..'Z').to_a
-  NUMERIC_ARRAY = ('0'..'9').to_a
-  PREVIOUS_NAMES = []
+  LEGAL_CHARACTERS = {
+    :alpha   => ('A'..'Z').to_a,
+    :numeric => ('0'..'9').to_a
+  }
+  NAME_FORMAT = [
+    :alpha,
+    :alpha,
+    :numeric,
+    :numeric,
+    :numeric
+  ]
 
   attr_reader :name
 
+  @@previous_names = []
+
   def initialize
-    @name = generate_unique_name
+    reset
   end
 
   def reset
@@ -21,11 +31,14 @@ class Robot
 
   def generate_unique_name
     loop do
-      generated_name = (2.times.map { ALPHABET_ARRAY.sample } + 3.times.map { NUMERIC_ARRAY.sample }).join
-      unless PREVIOUS_NAMES.include?(generated_name)
-        PREVIOUS_NAMES << generated_name
-        return generated_name
+      unless @@previous_names.include?(new_name = generate_name)
+        @@previous_names << new_name
+        return new_name
       end
     end
+  end
+
+  def generate_name
+    NAME_FORMAT.map { |character_type| LEGAL_CHARACTERS[character_type].sample }.join
   end
 end
