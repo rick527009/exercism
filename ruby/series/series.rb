@@ -1,10 +1,10 @@
 class Series
   def initialize(series_string)
-    @series = series_string.each_char
+    @series = series_string.chars
   end
 
-  def slices(num)
-    raise ArgumentError.new("num exceeds series length") if num > @series.count
-    @series.each_cons(num).to_a.map(&:join)
+  def slices(length)
+    raise ArgumentError.new("num exceeds series length") if length > @series.length
+    @series.each_cons(length).map(&:join)
   end
 end
